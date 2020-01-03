@@ -4,3 +4,5 @@
 # @Email   : hanlei5012@163.com
 # @File    : Server.py.py
 # @Software: PyCharm
+print('world')
+print('hello')
