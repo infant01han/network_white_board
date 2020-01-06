@@ -8,6 +8,13 @@ from tkinter import *
 class UserDialog:
     _Ip = ''
     _port = 0
+    _nickname = ''
+    @classmethod
+    def show_error_box(cls,msg):
+        master = Tk()
+        Label(master,text=msg).grid(row=0)
+        Button(master,text='ok',command=master.destroy).grid(row=1,pady=4)
+        master.mainloop()
     @classmethod
     def getUserinputIp(cls):
         def getUserIPAndPort():
@@ -47,3 +54,5 @@ class UserDialog:
         button.grid(row=2,column=0)
 
         ClientWindow.mainloop()
+if __name__ == '__main__':
+    UserDialog.getUserinputIp()
