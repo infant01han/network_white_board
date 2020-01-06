@@ -27,7 +27,7 @@ class Server:
             for client in Server.Clients:
                 try:
                     msg = 'ß'.encode('ISO-8859-1')
-                    print('ß')
+                    # print('ß')
                     client.sock.send(msg)
                 except ConnectionResetError:
                     print('ConnectionResetError')
