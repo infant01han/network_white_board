@@ -4,9 +4,10 @@
 # @Email   : hanlei5012@163.com
 # @File    : whiteboard.py
 # @Software: PyCharm
+import math
 from tkinter import *
 class WhiteBoard:
-    drawing_tool = 'line'
+    drawing_tool = 'pencil'
     # Colors = {'b': 'blue', 'r': 'red', 'g': 'green', 'o': 'orange', 'y': 'yellow', 'c': 'cyan', 'p': 'purple1',
     #           'd': 'black', 's': 'snow'}
     line_width = 2
@@ -16,7 +17,7 @@ class WhiteBoard:
         self._init_item_button()
         self._init_color_button()
         self.init_drawing_area()
-    def draw_line(self,msgLst):
+    def draw_pencil(self,msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
         self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width)
@@ -24,13 +25,41 @@ class WhiteBoard:
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
         self.drawing_area.create_rectangle(startX,startY,endX,endY,fill=color,width=0)
+    def draw_oval(self,msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        color = msgLst[5]
+        self.drawing_area.create_oval(startX,startY,endX,endY,fill=color,width=0)
+    def draw_line(self,msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        color = msgLst[5]
+        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=0)
+    def draw_circle(self,msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        x_center = (startX+endX)//2
+        y_center = (startY+endY)//2
+        radius = math.sqrt((endX-startX)**2+(endY-startY)**2)//2
+        color = msgLst[5]
+        self.drawing_area.create_oval(x_center-radius,y_center-radius,x_center+radius,y_center+radius,fill=color,width=0)
+    def draw_square(self,msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        edge_size = ((endX-startX) + (endY-startY)) //2
+        color = msgLst[5]
+        self.drawing_area.create_rectangle(startX,startY,startX+edge_size,startY+edge_size,fill=color,width=0)
     def draw_from_msg(self,msg):
         msgLst = msg.split()
         draw_type = msgLst[0]
         if draw_type == 'D':
-            self.draw_line(msgLst)
-        if draw_type == 'R':
+            self.draw_pencil(msgLst)
+        elif draw_type == 'R':
             self.draw_Rectangle(msgLst)
+        elif draw_type == 'L':
+            self.draw_line(msgLst)
+        elif draw_type == 'O':
+            self.draw_oval(msgLst)
+        elif draw_type == 'C':
+            self.draw_circle(msgLst)
+        elif draw_type == 'S':
+            self.draw_square(msgLst)
         else:
             pass
     def show_window(self):
