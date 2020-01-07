@@ -59,7 +59,7 @@ class Server:
     def wait_for_user_nickname(self,client_sock):
         new_user_id = client_sock.recv(1024).decode('utf-8')
         print(new_user_id)
-        print(Server.logs)
+        # print(Server.logs)
         for msgid in Server.logs.keys():
             msg = Server.logs[msgid]
             client_sock.sendall(msg.encode('ISO-8859-1'))
@@ -83,7 +83,7 @@ class Client:
                 if data == 'Ø':
                     break
             Server.logs[Client.msgID] = msg
-            if msg[0] == 'D':
+            if msg[0] in ['D','R']:
                 self.broadcast2Client(msg)
             Client.msgID += 1
             pass

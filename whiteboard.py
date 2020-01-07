@@ -20,11 +20,17 @@ class WhiteBoard:
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
         self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width)
+    def draw_Rectangle(self,msgLst):
+        startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
+        color = msgLst[5]
+        self.drawing_area.create_rectangle(startX,startY,endX,endY,fill=color,width=0)
     def draw_from_msg(self,msg):
         msgLst = msg.split()
         draw_type = msgLst[0]
         if draw_type == 'D':
             self.draw_line(msgLst)
+        if draw_type == 'R':
+            self.draw_Rectangle(msgLst)
         else:
             pass
     def show_window(self):
