@@ -11,6 +11,7 @@ import time
 
 class Server:
     Clients = []
+    logs = {}
     def __init__(self,host,port):
         self.host = host
         self.port = port
@@ -58,10 +59,15 @@ class Server:
     def wait_for_user_nickname(self,client_sock):
         new_user_id = client_sock.recv(1024).decode('utf-8')
         print(new_user_id)
+        print(Server.logs)
+        for msgid in Server.logs.keys():
+            msg = Server.logs[msgid]
+            client_sock.sendall(msg.encode('ISO-8859-1'))
         client = Client(client_sock,new_user_id)
         Server.Clients.append(client)
         client.start()
 class Client:
+    msgID = 0
     def __init__(self,sock,clientID):
         self.sock = sock
         self.clientID = clientID
@@ -76,8 +82,10 @@ class Client:
                 msg += data
                 if data == 'Ø':
                     break
+            Server.logs[Client.msgID] = msg
             if msg[0] == 'D':
                 self.broadcast2Client(msg)
+            Client.msgID += 1
             pass
     def broadcast2Client(self,msg):
         msg = msg.encode('ISO-8859-1')
