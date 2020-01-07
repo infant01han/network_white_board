@@ -70,8 +70,19 @@ class Client:
         self._run = False
     def start(self):
         while self._run:
-            time.sleep(0.1)
+            msg = ''
+            while True:
+                data = self.sock.recv(1).decode('ISO-8859-1')
+                msg += data
+                if data == 'Ø':
+                    break
+            if msg[0] == 'D':
+                self.broadcast2Client(msg)
             pass
+    def broadcast2Client(self,msg):
+        msg = msg.encode('ISO-8859-1')
+        for client in Server.Clients:
+            client.sock.sendall(msg)
 if __name__ == '__main__':
     server = Server('0.0.0.0', 6000)
     server.start()
