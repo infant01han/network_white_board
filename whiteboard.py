@@ -86,8 +86,14 @@ class WhiteBoard:
             self.draw_Text(msgLst)
         elif draw_type == 'Z':
             self.delete_obj(msgLst)
+        elif draw_type == 'DR':
+            self.drag_obj(msgLst)
         else:
             pass
+    def drag_obj(self,msgLst):
+        item = self.drawing_area.find_withtag(msgLst[1])
+        self.drawing_area.move(item,int(msgLst[2]),int(msgLst[3]))
+
     def show_window(self):
         self.myWhiteBoard.mainloop()
     def init_drawing_area(self):
