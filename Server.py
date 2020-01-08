@@ -67,7 +67,7 @@ class Server:
         Server.Clients.append(client)
         client.start()
 class Client:
-    msgID = 1
+    msgID = 0
     def __init__(self,sock,clientID):
         self.sock = sock
         self.clientID = clientID

@@ -25,6 +25,7 @@ class Client(Thread,WhiteBoard):
         self.x_pos = None
         self.y_pos = None
         self.last_time = None
+        self.last_click_obj = None
         self.line_x1,self.line_y1,self.line_x2,self.line_y2 = None,None,None,None
     def _init_mouse_event(self):
         self.drawing_area.bind('<Motion>',self.motion)
@@ -56,7 +57,7 @@ class Client(Thread,WhiteBoard):
             self.draw_one_obj()
     def do_drag(self):
         if self.last_click_obj != None:
-            msg = ['DR',self.last_click_obj,self.line_x2-self.line_x1,self.line_y2-self.line_y1]
+            msg = ('DR',self.last_click_obj,self.line_x2-self.line_x1,self.line_y2-self.line_y1)
             self.conn.send_message(msg)
     def send_del_msg(self,event):
         canvas_item_tuple = self.drawing_area.find_overlapping(event.x + 2,event.y + 2,event.x - 2,event.y - 2)
