@@ -83,7 +83,7 @@ class Client:
                 if data == 'Ø':
                     break
             Server.logs[Client.msgID] = msg
-            if msg[0] in ['D','R','L','O','C','S','E','DR']:
+            if msg[0] in ['D','R','L','O','C','S','E','DR','T']:
                 self.broadcast2Client(msg)
             Client.msgID += 1
             pass

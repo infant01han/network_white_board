@@ -7,6 +7,7 @@
 import time
 from threading import Thread
 
+from UserDialog import UserDialog
 from connection import Connection
 from whiteboard import WhiteBoard
 
@@ -40,14 +41,23 @@ class Client(Thread,WhiteBoard):
         print(event.x,event.y)
         self.last_time = None
         self.line_x2,self.line_y2=event.x,event.y
-        self.draw_one_obj()
+        if self.drawing_tool == 'text':
+            self.draw_text()
+        else:
+            self.draw_one_obj()
+    def draw_text(self):
+        text_to_draw = UserDialog._Text
+        cmd_color = self.Colors[self.color]
+        msg = ('T',self.line_x1, self.line_y1, cmd_color,text_to_draw)
+        self.conn.send_message(msg)
     def draw_one_obj(self):
         tool = self.drawing_tool
         if tool not in Client.Objects.keys():
             return
         else:
             cmd_type = Client.Objects[tool]
-            msg = (cmd_type, self.line_x1, self.line_y1, self.line_x2, self.line_y2, 'red')
+            cmd_color = self.Colors[self.color]
+            msg = (cmd_type, self.line_x1, self.line_y1, self.line_x2, self.line_y2, cmd_color)
             self.conn.send_message(msg)
 
     # (tpye，startx,starty,endx,endy,color)
@@ -58,7 +68,7 @@ class Client(Thread,WhiteBoard):
             if now - self.last_time < 0.02:
                 return
             self.last_time = now
-            msg = ('D',self.x_pos,self.y_pos,event.x,event.y,'red')
+            msg = ('D',self.x_pos,self.y_pos,event.x,event.y,self.Colors[self.color])
             self.conn.send_message(msg)
             self.x_pos = event.x
             self.y_pos = event.y
