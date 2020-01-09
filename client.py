@@ -38,8 +38,13 @@ class Client(Thread,WhiteBoard):
         self.last_time = time.time()
         self.line_x1,self.line_y1=event.x,event.y
 
+
         if self.isMouseDown ==True and self.drawing_tool == 'eraser':
             self.send_del_msg(event)
+
+        elif self.isMouseDown ==True and self.drawing_tool == 'clear_all':
+            msg = 'A'
+            self.conn.send_message(msg)
         try:
             self.last_click_obj = self.drawing_area.gettags('current')[0]
         except Exception:
@@ -53,6 +58,7 @@ class Client(Thread,WhiteBoard):
             self.draw_text()
         elif self.drawing_tool == 'drag':
             self.do_drag()
+
         else:
             self.draw_one_obj()
     def do_drag(self):

@@ -87,6 +87,9 @@ class Client:
             elif msg[0] in ['Z']:
                 splitmsg = msg.split()
                 self.delete_shape(msg,splitmsg)
+            elif msg[0] in ['A']:
+                Server.logs={}
+                self.delete_all(msg)
             pass
     def delete_shape(self,msg,splitmsg):
         if splitmsg[1] in Server.logs:
@@ -104,6 +107,11 @@ class Client:
             client.sock.sendall(msg)
         Client.msgID += 1
 
+    def delete_all(self, msg):
+        msg = msg.encode('ISO-8859-1')
+        for client in Server.Clients:
+            client.sock.sendall(msg)
+
 if __name__ == '__main__':
-    server = Server('0.0.0.0', 6000)
+    server = Server('127.0.0.1', 6000)
     server.start()
